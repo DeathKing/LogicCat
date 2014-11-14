@@ -1,5 +1,3 @@
-(load-option 'format)
-
 (define (@not predict)
   (lambda arg (not (apply predict arg))))
 
@@ -13,7 +11,21 @@
             (hash-table/put! table arg res)
             res))))))
 
-(define-syntax @memo
+(define (@count-call func)
+  (let ((count 0))
+    (lambda arg
+      (cond ((eq? (car arg) 'reset!) (set! count 0))
+            ((eq? (car arg) 'counts) count)
+            (else
+              (set! count (+ count 1))
+              (apply func arg))))))
+
+(define-syntax @memoize!
   (syntax-rules ()
     ((_ func)
      (define func (@memoize func)))))
+
+(define-syntax @count-call!
+  (syntax-rules ()
+    ((_ func)
+     (define func (@count-call func)))))

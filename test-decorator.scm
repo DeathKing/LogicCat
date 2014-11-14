@@ -1,5 +1,6 @@
 (load "utils.scm")
 (load "decorator.scm")
+(load-option 'format)
 
 (define (fib x)
   (cond
