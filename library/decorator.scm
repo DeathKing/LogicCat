@@ -8,6 +8,7 @@
         (lambda (x) x)
         (lambda ()
           (let ((res (apply func arg)))
+            (format "Func ~A is called." func) ; for inspect
             (hash-table/put! table arg res)
             res))))))
 
@@ -23,9 +24,9 @@
 (define-syntax @memoize!
   (syntax-rules ()
     ((_ func)
-     (define func (@memoize func)))))
+     (set! func (@memoize func)))))
 
 (define-syntax @count-call!
   (syntax-rules ()
     ((_ func)
-     (define func (@count-call func)))))
+     (set! func (@count-call func)))))
