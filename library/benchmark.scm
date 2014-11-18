@@ -1,9 +1,17 @@
 (load-option 'format)
 
-(define (benchmark describetion exp)
+(define (benchmark desc exp)
   (with-timings exp
     (lambda (run-time gc-time real-time)
-      (format #t "~A: ~As~%" describetion (internal-time/ticks->seconds real-time)))))
+      (let ((gc-time   (* (internal-time/ticks->seconds gc-time) 1000.0))
+            (cpu-time  (* (internal-time/ticks->seconds run-time) 1000.0))
+            (real-time (* (internal-time/ticks->seconds real-time) 1000.0)))
+        (format #t "~@10A: ~@8A ~@8A ~@8A~%" desc run-time gc-time real-time)))))
+
+(define-syntax bm
+  (syntax-rules ()
+    ((_ desc thunk)
+     (benchmark desc (lambda () thunk)))))
 
 ;;; Syntax: (time <exp_thunk>)
 ;;; Description:

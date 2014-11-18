@@ -17,20 +17,8 @@
     ((and (> n 0) (> m 0)) (ack (- m 1) (ack m (- n 1))))
     (else (error "invalid arguments with" m n))))
 
-(define (run-test!)
+(define (run-naive-fib-test to)
+  (for-each (lambda (e) (bm e (fib e))) (iota to 1)))
 
-  (benchmark "5 times fib(35) with no memo"
-    (lambda ()
-      (repeat-times 5
-        (lambda ()
-          (format #t "new loop\n")
-          (fib 30)))))
-
-  (set! fib (@memoize fib))
-
-  (benchmark "5 times fib(35) with memo"
-    (lambda ()
-      (repeat-times 5
-        (lambda ()
-          (format #t "new loop\n")
-          (fib 30)))))))
+(define (run-memo-fib-test to)
+  (for-each (lambda (e) (bm e (and (fib 'reset) (fib e)))) (iota to 1)))

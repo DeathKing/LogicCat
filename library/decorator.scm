@@ -8,7 +8,6 @@
         (lambda (x) x)
         (lambda ()
           (let ((res (apply func arg)))
-            (format "Func ~A is called." func) ; for inspect
             (hash-table/put! table arg res)
             res))))))
 
