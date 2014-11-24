@@ -3,3 +3,7 @@
     (begin
       (exp)
       (repeat-times (- times 1) exp))))
+
+(define (deadloop exp)
+  (exp)
+  (deadloop exp))
